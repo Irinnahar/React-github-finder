@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
-const User = ({ user: { avatar_url, login, url } }) => {
+const User = ({ user: { avatar_url, login, html_url } }) => {
     return (
         <div className="card text-center" style={userStyle}>
             <img
@@ -11,7 +11,7 @@ const User = ({ user: { avatar_url, login, url } }) => {
                 style={{ width: '60px' }}
             />
             <h3>{login}</h3>
-            <a className="btn btn-dark btn-sm my-1" href={url}>More</a>
+            <a className="btn btn-dark btn-sm my-1" href={html_url}>More</a>
         </div>
     )
 }
@@ -24,6 +24,6 @@ const userStyle = {
 User.propTypes = {
     avatar_url: PropTypes.string,
     login: PropTypes.string,
-    url: PropTypes.string
+    html_url: PropTypes.string
 }
 export default User;
