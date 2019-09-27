@@ -368,6 +368,10 @@ table th {
   margin: 0 0.25rem;
 }
 
+.d-flex {
+  display: flex;
+}
+
 .navbar a:hover {
   color: var(--light-color);
 }

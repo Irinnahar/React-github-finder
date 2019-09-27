@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Spinner() {
+const Spinner = () => {
     return (
         <div style={{ textAlign: 'center', marginTop: '10%' }}>
             <img
@@ -10,3 +10,5 @@ export default function Spinner() {
         </div>
     )
 }
+
+export default Spinner;
