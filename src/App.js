@@ -1,8 +1,11 @@
-import React, { Component } from 'react';
-import Navbar from './Components/Navbar';
-import Users from './Components/Users';
-import Search from './Components/Search';
-import Alert from './Components/Alert/Alert';
+import React, { Component, Fragment } from 'react';
+import Navbar from './Components/layout/Navbar';
+import Users from './Components/Users/Users';
+import Search from './Components/Users/Search';
+import Alert from './Components/layout/Alert/Alert';
+import About from './Components/pages/About';
+
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const axios = require('axios').default;
 
@@ -43,19 +46,35 @@ class App extends Component {
   render() {
     const { userList, loading } = this.state;
     return (
-      <div className="App">
-        <Navbar title="Github Finder" />
-        <div className="container">
-          {this.state.setAlert !== null && <Alert alert={this.state.setAlert} />}
-          <Search
-            searchUser={this.searchUser}
-            clearUser={this.clearUser}
-            showClearBtn={this.state.userList.length > 0 ? true : false}
-            setAlert={this.setAlert}
-          />
-          <Users users={userList} loading={loading} />
+      <Router>
+        <div className="App">
+          <Navbar title="Github Finder" />
+          <div className="container">
+            {this.state.setAlert !== null && <Alert alert={this.state.setAlert} />}
+            <Switch>
+              <Route path="/" exact render={props => (
+                <Fragment>
+                  <Search
+                    searchUser={this.searchUser}
+                    clearUser={this.clearUser}
+                    showClearBtn={this.state.userList.length > 0 ? true : false}
+                    setAlert={this.setAlert}
+                  />
+                  <Users users={userList} loading={loading} />
+                </Fragment>
+              )}
+              />
+              <Route
+                path='/about'
+                exact
+                component={About}
+              />
+            </Switch>
+
+          </div>
         </div>
-      </div>
+      </Router>
+
     )
   }
 }
