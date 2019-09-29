@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import Navbar from './Components/layout/Navbar';
 import Users from './Components/Users/Users';
+import User from './Components/Users/User';
 import Search from './Components/Users/Search';
 import Alert from './Components/layout/Alert/Alert';
 import About from './Components/pages/About';
@@ -13,7 +14,8 @@ class App extends Component {
   state = {
     userList: [],
     loading: false,
-    setAlert: null
+    setAlert: null,
+    user: {}
   }
 
   async componentDidMount() {
@@ -24,12 +26,18 @@ class App extends Component {
   }
 
   searchUser = async name => {
-
     this.setState({ loading: true })
     const response = await axios.get(`https://api.github.com/search/users?q=${name}&client_id=df05c58246f1c0801fc7
       &client_secret=158b800027ce140f07c616006632a3417c855116`);
     this.setState({ userList: response.data.items, loading: false });
+  }
 
+  getUser = async name => {
+    this.setState({ loading: true })
+    const response = await axios.get(`https://api.github.com/users/${name}?client_id=df05c58246f1c0801fc7
+      &client_secret=158b800027ce140f07c616006632a3417c855116`);
+    this.setState({ user: response.data, loading: false });
+    console.log(this.state.user)
   }
 
   clearUser = () => {
@@ -44,7 +52,7 @@ class App extends Component {
   }
 
   render() {
-    const { userList, loading } = this.state;
+    const { userList, loading, user } = this.state;
     return (
       <Router>
         <div className="App">
@@ -68,6 +76,18 @@ class App extends Component {
                 path='/about'
                 exact
                 component={About}
+              />
+              <Route
+                path='/user/:login'
+                exact
+                render={props => (
+                  <User
+                    {...props}
+                    getUser={this.getUser}
+                    user={user}
+                    loading={loading}
+                  />
+                )}
               />
             </Switch>
 
