@@ -7,6 +7,7 @@ import Alert from './Components/layout/Alert/Alert';
 import About from './Components/pages/About';
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import GithubState from './Components/Context/Github/GithubState';
 
 const axios = require('axios').default;
 
@@ -18,12 +19,7 @@ const App = () => {
   const [alert, setAlert] = useState(null);
 
 
-  // async componentDidMount() {
-  //   setState({ loading: true })
-  //   const response = await axios.get(`https://api.github.com/users?client_id=df05c58246f1c0801fc7
-  //   &client_secret=158b800027ce140f07c616006632a3417c855116`);
-  //   setState({ userList: response.data, loading: false })
-  // }
+
 
   const searchUser = async name => {
     setLoading(true);
@@ -61,49 +57,52 @@ const App = () => {
     setLoading(false);
   }
   return (
-    <Router>
-      <div className="App">
-        <Navbar title="Github Finder" />
-        <div className="container">
-          {alert !== null && <Alert alert={alert} />}
-          <Switch>
-            <Route path="/" exact render={props => (
-              <Fragment>
-                <Search
-                  searchUser={searchUser}
-                  clearUser={clearUser}
-                  showClearBtn={users.length > 0 ? true : false}
-                  setAlert={showAlert}
-                />
-                <Users users={users} loading={loading} />
-              </Fragment>
-            )}
-            />
-            <Route
-              path='/about'
-              exact
-              component={About}
-            />
-            <Route
-              path='/user/:login'
-              exact
-              render={props => (
-                <User
-                  {...props}
-                  getUser={getUser}
-                  getRepos={getRepos}
-                  user={user}
-                  repos={repos}
-                  loading={loading}
-                />
+    <GithubState>
+      <Router>
+        <div className="App">
+          <Navbar title="Github Finder" />
+          <div className="container">
+            {alert !== null && <Alert alert={alert} />}
+            <Switch>
+              <Route path="/" exact render={props => (
+                <Fragment>
+                  <Search
+                    searchUser={searchUser}
+                    clearUser={clearUser}
+                    showClearBtn={users.length > 0 ? true : false}
+                    setAlert={showAlert}
+                  />
+                  <Users users={users} loading={loading} />
+                </Fragment>
               )}
-            />
+              />
+              <Route
+                path='/about'
+                exact
+                component={About}
+              />
+              <Route
+                path='/user/:login'
+                exact
+                render={props => (
+                  <User
+                    {...props}
+                    getUser={getUser}
+                    getRepos={getRepos}
+                    user={user}
+                    repos={repos}
+                    loading={loading}
+                  />
+                )}
+              />
 
-          </Switch>
+            </Switch>
 
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+
+    </GithubState>
 
   )
 }
